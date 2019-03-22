@@ -1,2 +1,2 @@
 # node_generation
-Generation of quasi-uniform nodes of variable density (ie. for meshless PDE methods)
+Generation of variable density nodes (ie. for meshless PDE methods)
