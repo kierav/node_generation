@@ -21,7 +21,7 @@ end
 
 dotnr   = 0;                            % Counter for the placed nodes
 rng(0);                                 % Initialize random number generator
-pdp     = [linspace(box(1),box(2),ninit)',box(3)+ 1e-4*rand(ninit,1)]; % Array to hold PDPs
+pdp     = [linspace(box(1),box(2),ninit)',box(3)+ 1e-4*(box(4)-box(3))*rand(ninit,1)]; % Array to hold PDPs
 xy      = zeros(dotmax,2);              % Array to store produced node locations
 nodeindices = zeros(length(pdp),1);     % Array of pointers to the produced node locations 
 excessheight = 0.1;                     % Percentage of the height to go over
@@ -52,7 +52,7 @@ while ym <= (1+excessheight)*box(4) && dotnr < dotmax
         i = iright;
     end
     
-    searchr = min(2*floor(r/dx),floor(ninit/2)-1);     
+    searchr = min(2*ceil(r/dx),floor(ninit/2)-1);     
     
     while 1
         % Wrap around if a boundary is reached
