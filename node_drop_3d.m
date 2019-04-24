@@ -17,7 +17,7 @@ function xyz = node_drop_3d (box, ninit, dotmax, radius, vargin)
 
 dotnr   = 0;                            % Counter for the placed nodes
 rng(0);                                 % Initialize random number generator
-pdp     = box(5)+1e-4*rand(ninit);      % Array to hold PDPs
+pdp     = box(5)+1e-4*(box(6)-box(5))*rand(ninit);      % Array to hold PDPs
 xyz      = zeros(dotmax,3);             % Array to store produced node locations
 nodeindices = zeros(size(pdp));         % Array of pointers to the produced node locations 
 excess_height = 0.1;                    % Percentage of the height to go over
@@ -32,7 +32,7 @@ while zm <= (1+excess_height)*box(6) && dotnr < dotmax
     xyz(dotnr,:) = [box(1)+dx*(i1-1),box(3)+dy*(i2-1),pdp(i1,i2)];    
     nodeindices(i1,i2) = dotnr;
     
-    r = radius(xyz(dotnr,:),box(2),vargin);            
+    r = radius(xyz(dotnr,:),vargin);            
     
     % --- Find PDPs inside the new circle
     ileft  = max(1,i1 - floor(r/dx));
@@ -54,7 +54,7 @@ while zm <= (1+excess_height)*box(6) && dotnr < dotmax
     i1 = ileft+ix(iy)-1;
     i2 = ibottom+iy-1;
     
-    searchr = min(2*floor(r/dx),floor(ninit(1)/2)-1);
+    searchr = min(2*ceil(r/dx),floor(ninit(1)/2)-1);
     
     while 1
         % Wrap around if a boundary is reached      
