@@ -17,12 +17,15 @@ function xyz = node_drop_3d (box, ninit, dotmax, radius, vargin)
 
 dotnr   = 0;                            % Counter for the placed nodes
 rng(0);                                 % Initialize random number generator
-pdp     = box(5)+1e-4*(box(6)-box(5))*rand(ninit);      % Array to hold PDPs
 xyz      = zeros(dotmax,3);             % Array to store produced node locations
 nodeindices = zeros(size(pdp));         % Array of pointers to the produced node locations 
 excess_height = 0.1;                    % Percentage of the height to go over
 dx = (box(2)-box(1))/(ninit(1)-1);      % Grid size
 dy = (box(4)-box(3))/(ninit(2)-1);
+xx = box(1):10*dx:box(2); yy = box(3):10*dy:box(4);
+[XX,YY] = meshgrid(xx,yy);
+r = radius([XX(:),YY(:),box(1)*ones(size(XX(:)))],box(2),rFunction,rFactor);
+pdp = box(5)+0.01*min(r)*rand(ninit);   % Array to hold PDPs
 [zm,idx]  = min(pdp(:));                % Locate PDP with lowest z-coordinate
 [i1,i2] = ind2sub(size(pdp),idx);
 
@@ -75,7 +78,6 @@ while zm <= (1+excess_height)*box(6) && dotnr < dotmax
         [zm,ix] = min(pdp(xsearch,ysearch));
         [~,iy] = min(zm);
         ix = ix(iy);
-        
         i1 = xsearch(ix);
         i2 = ysearch(iy);
         zm = pdp(i1,i2);

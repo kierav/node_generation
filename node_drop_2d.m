@@ -21,7 +21,9 @@ end
 
 dotnr   = 0;                            % Counter for the placed nodes
 rng(0);                                 % Initialize random number generator
-pdp     = [linspace(box(1),box(2),ninit)',box(3)+ 1e-4*(box(4)-box(3))*rand(ninit,1)]; % Array to hold PDPs
+pdp     = [linspace(box(1),box(2),ninit)',box(3)*ones(ninit,1)]; % Array to hold PDPs
+r = radius(pdp,vargin);                 % Exclusion radius for bottom nodes
+pdp(:,2) = pdp(:,2)+ 0.1*min(r)*rand(ninit,1);  % Add random perturbation
 xy      = zeros(dotmax,2);              % Array to store produced node locations
 nodeindices = zeros(length(pdp),1);     % Array of pointers to the produced node locations 
 excessheight = 0.1;                     % Percentage of the height to go over
