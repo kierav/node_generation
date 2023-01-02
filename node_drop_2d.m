@@ -1,4 +1,4 @@
-function xy = node_drop_2d (box, ninit, dotmax, radius, vargin)
+function xy = node_drop_2d (box, ninit, dotmax, radius, varargin)
 % NODE_DROP_2D generates quasi-uniform nodes in a 2-D bounded box with 
 % spacing between nodes specified by an exclusion radius function
 %
@@ -16,13 +16,13 @@ function xy = node_drop_2d (box, ninit, dotmax, radius, vargin)
 %   xy          Array xy(:,2) with the generated node locations
 
 if nargin < 5
-    vargin = [];
+    varargin = [];
 end
 
 dotnr   = 0;                            % Counter for the placed nodes
 rng(0);                                 % Initialize random number generator
 pdp     = [linspace(box(1),box(2),ninit)',box(3)*ones(ninit,1)]; % Array to hold PDPs
-r = radius(pdp,vargin);                 % Exclusion radius for bottom nodes
+r = radius(pdp,varargin{:});                 % Exclusion radius for bottom nodes
 pdp(:,2) = pdp(:,2)+ 0.1*min(r)*rand(ninit,1);  % Add random perturbation
 xy      = zeros(dotmax,2);              % Array to store produced node locations
 nodeindices = zeros(length(pdp),1);     % Array of pointers to the produced node locations 
@@ -36,7 +36,7 @@ while ym <= (1+excessheight)*box(4) && dotnr < dotmax
     xy(dotnr,:) = pdp(i,:);             
     nodeindices(i) = dotnr;             
     
-    r = radius(xy(dotnr,:),vargin);     
+    r = radius(xy(dotnr,:),varargin{:});     
     
     % --- Find PDPs inside the new circle
     ileft  = i - floor(r/dx);
